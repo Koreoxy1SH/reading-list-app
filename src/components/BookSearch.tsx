@@ -10,21 +10,10 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
+import { Book, useStore } from "@/store"
 
-export type Book = {
-	key: string
-	title: string
-	author_name: string[]
-	first_publish_year: string
-	number_of_pages_median: string | null
-	status: "done" | "inProgress" | "backlog"
-}
-
-export const BookSearch = ({
-	onAddBook,
-}: {
-	onAddBook: (book: Book) => void
-}) => {
+export const BookSearch = () => {
+	const { books, addBook } = useStore((state) => state)
 	const [query, setQuery] = useState("")
 	const [results, setResults] = useState<Book[]>([])
 	const [isLoading, setIsLoading] = useState(false)
@@ -122,7 +111,7 @@ export const BookSearch = ({
 									<Button
 										variant="link"
 										onClick={() => {
-											onAddBook({
+											addBook({
 												key: book.key,
 												title: book.title,
 												author_name: book.author_name,
@@ -132,6 +121,7 @@ export const BookSearch = ({
 												status: "backlog",
 											})
 										}}
+										disabled={books.some((b) => b.key === book.key)}
 									>
 										Add
 									</Button>
