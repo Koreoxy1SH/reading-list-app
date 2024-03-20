@@ -90,46 +90,52 @@ export const BookSearch = () => {
 			</div>
 
 			<div className="mt-4 max-h-64 overflow-auto">
-				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead className="p-2">Tittle</TableHead>
-							<TableHead className="p-2">Author</TableHead>
-							<TableHead className="p-2">Year</TableHead>
-							<TableHead className="p-2">Page Count</TableHead>
-							<TableHead className="p-2"></TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{results.map((book, index) => (
-							<TableRow key={index}>
-								<TableCell>{book.title}</TableCell>
-								<TableCell>{book.author_name}</TableCell>
-								<TableCell>{book.first_publish_year}</TableCell>
-								<TableCell>{book.number_of_pages_median || "-"}</TableCell>
-								<TableCell>
-									<Button
-										variant="link"
-										onClick={() => {
-											addBook({
-												key: book.key,
-												title: book.title,
-												author_name: book.author_name,
-												first_publish_year: book.first_publish_year,
-												number_of_pages_median:
-													book.number_of_pages_median || null,
-												status: "backlog",
-											})
-										}}
-										disabled={books.some((b) => b.key === book.key)}
-									>
-										Add
-									</Button>
-								</TableCell>
+				{query.length > 0 && results.length > 0 ? (
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHead className="p-2">Tittle</TableHead>
+								<TableHead className="p-2">Author</TableHead>
+								<TableHead className="p-2">Year</TableHead>
+								<TableHead className="p-2">Page Count</TableHead>
+								<TableHead className="p-2"></TableHead>
 							</TableRow>
-						))}
-					</TableBody>
-				</Table>
+						</TableHeader>
+						<TableBody>
+							{results.map((book, index) => (
+								<TableRow key={index}>
+									<TableCell>{book.title}</TableCell>
+									<TableCell>{book.author_name}</TableCell>
+									<TableCell>{book.first_publish_year}</TableCell>
+									<TableCell>{book.number_of_pages_median || "-"}</TableCell>
+									<TableCell>
+										<Button
+											variant="link"
+											onClick={() => {
+												addBook({
+													key: book.key,
+													title: book.title,
+													author_name: book.author_name,
+													first_publish_year: book.first_publish_year,
+													number_of_pages_median:
+														book.number_of_pages_median || null,
+													status: "backlog",
+												})
+											}}
+											disabled={books.some((b) => b.key === book.key)}
+										>
+											Add
+										</Button>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				) : (
+					<div className="flex max-h-60 items-center justify-center p-16">
+						<p>Start your search !</p>
+					</div>
+				)}
 			</div>
 			<div className="mt-5 flex items-center justify-between">
 				<Button
