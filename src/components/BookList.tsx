@@ -8,9 +8,13 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Book, useStore } from "@/store"
+import { DragDropContext, Draggable, DropResult } from "react-beautiful-dnd"
+import { StrictModeDroppable } from "./StrictModeDroppable"
 
 export const BookList = () => {
-	const { books, removeBook, moveBook } = useStore((state) => state)
+	const { books, removeBook, moveBook, reorderBooks } = useStore(
+		(state) => state,
+	)
 
 	const moveToList = (book: Book, targetList: Book["status"]) => {
 		moveBook(book, targetList)
@@ -56,29 +60,64 @@ export const BookList = () => {
 		</Card>
 	)
 
+	const onDragEnd = (result: DropResult) => {
+		if (!result.destination) return
+		const sourceIndex = result.source.index
+		const destinationIndex = result.destination.index
+		const listType = result.source.droppableId as Book["status"]
+
+		reorderBooks(listType, sourceIndex, destinationIndex)
+	}
+
+	const renderDraggableBookList = (listType: Book["status"]) => {
+		const filteredBooks = books.filter((book) => book.status === listType)
+
+		return (
+			<StrictModeDroppable droppableId={listType}>
+				{(provided) => (
+					<div {...provided.droppableProps} ref={provided.innerRef}>
+						{filteredBooks.map((book, index) => (
+							<Draggable key={book.key} draggableId={book.key} index={index}>
+								{(provided) => (
+									<div
+										ref={provided.innerRef}
+										{...provided.draggableProps}
+										className="my-2"
+									>
+										<div {...provided.dragHandleProps}>
+											{renderBookItem(book, index, listType)}
+										</div>
+									</div>
+								)}
+							</Draggable>
+						))}
+					</div>
+				)}
+			</StrictModeDroppable>
+		)
+	}
+
 	return (
 		<div className="space-y-8 p-4">
 			<h2 className="mb-4 text-2xl font-bold">Reading List</h2>
-			{books.filter((book) => book.status === "inProgress").length > 0 && (
-				<>
-					<h3 className="mb-2 text-xl font-semibold">In Progress</h3>
-					<div>
-						{books
-							.filter((book) => book.status === "inProgress")
-							.map((book, index) => renderBookItem(book, index, "inProgress"))}
-					</div>
-				</>
-			)}
-			{books.filter((book) => book.status === "backlog").length > 0 && (
-				<>
-					<h3 className="mb-2 text-xl font-semibold">Backlog</h3>
-					<div>
-						{books
-							.filter((book) => book.status === "backlog")
-							.map((book, index) => renderBookItem(book, index, "backlog"))}
-					</div>
-				</>
-			)}
+
+			<DragDropContext onDragEnd={onDragEnd}>
+				{books.filter((book) => book.status === "inProgress").length > 0 && (
+					<>
+						<h3 className="mb-2 text-xl font-semibold">In Progress</h3>
+						{renderDraggableBookList("inProgress")}
+					</>
+				)}
+			</DragDropContext>
+
+			<DragDropContext onDragEnd={onDragEnd}>
+				{books.filter((book) => book.status === "backlog").length > 0 && (
+					<>
+						<h3 className="mb-2 text-xl font-semibold">Backlog</h3>
+						{renderDraggableBookList("backlog")}
+					</>
+				)}
+			</DragDropContext>
 
 			{books.filter((book) => book.status === "done").length > 0 && (
 				<>
