@@ -4,8 +4,8 @@ export type Book = {
 	key: string
 	title: string
 	author_name: string[]
-	first_publish_year: string
-	number_of_pages_median: string | null
+	first_publish_year: number
+	number_of_pages_median: number | null
 	status: "done" | "inProgress" | "backlog"
 }
 
@@ -24,6 +24,33 @@ interface BookStore extends BookState {
 		endIndex: number,
 	) => void
 }
+
+const initialBooks: Book[] = [
+	{
+		key: "/works/OL9476843M",
+		title: "The Lord of the Rings 2007 Calendar",
+		author_name: ["John kan"],
+		first_publish_year: 122,
+		number_of_pages_median: 2131,
+		status: "inProgress",
+	},
+	{
+		key: "/works/OL9asdaasd",
+		title: "The Broke",
+		author_name: ["dEDD kan"],
+		first_publish_year: 111,
+		number_of_pages_median: 2121,
+		status: "backlog",
+	},
+	{
+		key: "/works/Oa1231asd",
+		title: "The Dude",
+		author_name: ["dude"],
+		first_publish_year: 134,
+		number_of_pages_median: 125,
+		status: "done",
+	},
+]
 
 export const useStore = create<BookStore>((set) => ({
 	books: [],
@@ -87,7 +114,7 @@ export const useStore = create<BookStore>((set) => ({
 		if (storedBooks) {
 			set({ books: JSON.parse(storedBooks) })
 		} else {
-			set({ books: [] })
+			set({ books: initialBooks })
 		}
 	},
 }))
