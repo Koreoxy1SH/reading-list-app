@@ -10,6 +10,17 @@ import { Button } from "@/components/ui/button"
 import { Book, useStore } from "@/store"
 import { DragDropContext, Draggable, DropResult } from "react-beautiful-dnd"
 import { StrictModeDroppable } from "./StrictModeDroppable"
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
+	GiBookPile,
+	GiBookmarklet,
+	GiBookshelf,
+	GiBurningBook,
+} from "react-icons/gi"
 
 export const BookList = () => {
 	const { books, removeBook, moveBook, reorderBooks } = useStore(
@@ -24,37 +35,63 @@ export const BookList = () => {
 		index: number,
 		listType: Book["status"],
 	) => (
-		<Card key={index}>
+		<Card
+			key={index}
+			className="rounded-none first:mt-0 first:rounded-t-lg last:rounded-b-lg"
+		>
 			<CardHeader>
 				<CardTitle>{book.title}</CardTitle>
 				<CardDescription>{book.author_name}</CardDescription>
 			</CardHeader>
 			<CardFooter className="flex justify-between">
-				<Button variant="destructive" onClick={() => removeBook(book)}>
-					Remove
-				</Button>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<Button variant="destructive" onClick={() => removeBook(book)}>
+							<GiBurningBook className="size-5" />
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent>Delete from my reading list</TooltipContent>
+				</Tooltip>
+
 				<div className="inline-flex gap-2">
-					<Button
-						variant="outline"
-						onClick={() => moveToList(book, "inProgress")}
-						disabled={listType === "inProgress"}
-					>
-						In Progress
-					</Button>
-					<Button
-						variant="outline"
-						onClick={() => moveToList(book, "backlog")}
-						disabled={listType === "backlog"}
-					>
-						Backlog
-					</Button>
-					<Button
-						variant="outline"
-						onClick={() => moveToList(book, "done")}
-						disabled={listType === "done"}
-					>
-						Done
-					</Button>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button
+								variant="outline"
+								onClick={() => moveToList(book, "inProgress")}
+								disabled={listType === "inProgress"}
+							>
+								<GiBookmarklet className="size-4" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent>Mark as "Currently Reading"</TooltipContent>
+					</Tooltip>
+
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button
+								variant="outline"
+								onClick={() => moveToList(book, "backlog")}
+								disabled={listType === "backlog"}
+							>
+								<GiBookPile className="size-5" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent>Mark as "For Later"</TooltipContent>
+					</Tooltip>
+
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button
+								variant="outline"
+								onClick={() => moveToList(book, "done")}
+								disabled={listType === "done"}
+							>
+								<GiBookshelf className="size-5 pb-0.5" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent>Mark as "Done"</TooltipContent>
+					</Tooltip>
 				</div>
 			</CardFooter>
 		</Card>
@@ -104,7 +141,10 @@ export const BookList = () => {
 			<DragDropContext onDragEnd={onDragEnd}>
 				{books.filter((book) => book.status === "inProgress").length > 0 && (
 					<>
-						<h3 className="mb-2 text-xl font-semibold">In Progress</h3>
+						<h3 className="my-2 flex items-end gap-2 text-xl font-semibold dark:text-white">
+							Currently Reading
+							<GiBookmarklet className="size-6" />
+						</h3>
 						{renderDraggableBookList("inProgress")}
 					</>
 				)}
@@ -113,7 +153,9 @@ export const BookList = () => {
 			<DragDropContext onDragEnd={onDragEnd}>
 				{books.filter((book) => book.status === "backlog").length > 0 && (
 					<>
-						<h3 className="mb-2 text-xl font-semibold">Backlog</h3>
+						<h3 className="my-2 flex items-end gap-2 text-xl font-semibold dark:text-white">
+							For Later <GiBookPile className="size-7" />
+						</h3>
 						{renderDraggableBookList("backlog")}
 					</>
 				)}
@@ -121,7 +163,10 @@ export const BookList = () => {
 
 			{books.filter((book) => book.status === "done").length > 0 && (
 				<>
-					<h3 className="mb-2 text-xl font-semibold">Done</h3>
+					<h3 className="my-2 flex items-end gap-2 text-xl font-semibold dark:text-white">
+						Done
+						<GiBookshelf className="size-7 pb-0.5" />
+					</h3>
 					<div>
 						{books
 							.filter((book) => book.status === "done")
