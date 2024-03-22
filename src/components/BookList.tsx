@@ -21,6 +21,7 @@ import {
 	GiBookshelf,
 	GiBurningBook,
 } from "react-icons/gi"
+import { BookSearch, SearchDialog } from "./BookSearch"
 
 export const BookList = () => {
 	const { books, removeBook, moveBook, reorderBooks } = useStore(
@@ -136,7 +137,15 @@ export const BookList = () => {
 
 	return (
 		<div className="space-y-8 p-4">
-			<h2 className="mb-4 text-2xl font-bold">Reading List</h2>
+			<div className="flex gap-2 max-sm:flex-col sm:items-center sm:justify-between">
+				<h2 className="mb-4 text-2xl font-bold">Reading List</h2>
+
+				<div className="h-full">
+					<SearchDialog>
+						<BookSearch />
+					</SearchDialog>
+				</div>
+			</div>
 
 			<DragDropContext onDragEnd={onDragEnd}>
 				{books.filter((book) => book.status === "inProgress").length > 0 && (
