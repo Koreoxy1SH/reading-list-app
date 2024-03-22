@@ -20,7 +20,7 @@ import {
 	GiBookshelf,
 	GiBurningBook,
 } from "react-icons/gi"
-import { BookSearch, SearchDialog } from "./BookSearch"
+import { BookSearch } from "./BookSearch"
 
 export const BookList = () => {
 	const { books, removeBook, moveBook, reorderBooks } = useStore(
@@ -140,9 +140,7 @@ export const BookList = () => {
 				<h2 className="mb-4 text-2xl font-bold">Reading List</h2>
 
 				<div className="h-full">
-					<SearchDialog>
-						<BookSearch />
-					</SearchDialog>
+					<BookSearch />
 				</div>
 			</div>
 
