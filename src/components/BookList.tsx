@@ -1,4 +1,3 @@
-import React from "react"
 import {
 	Card,
 	CardDescription,
@@ -147,42 +146,56 @@ export const BookList = () => {
 				</div>
 			</div>
 
+			<h3 className="my-2 flex items-end gap-2 text-xl font-semibold">
+				Currently Reading
+				<GiBookmarklet className="size-6" />
+			</h3>
 			<DragDropContext onDragEnd={onDragEnd}>
-				{books.filter((book) => book.status === "inProgress").length > 0 && (
-					<>
-						<h3 className="my-2 flex items-end gap-2 text-xl font-semibold dark:text-white">
-							Currently Reading
-							<GiBookmarklet className="size-6" />
-						</h3>
-						{renderDraggableBookList("inProgress")}
-					</>
-				)}
+				<div className="rounded-lg border bg-muted p-4">
+					{books.filter((book) => book.status === "inProgress").length > 0 ? (
+						renderDraggableBookList("inProgress")
+					) : (
+						<div className="p-4">
+							<p className="text-primary"> A rolling stone gathers no moss.</p>
+						</div>
+					)}
+				</div>
 			</DragDropContext>
 
+			<h3 className="my-2 flex items-end gap-2 text-xl font-semibold">
+				For Later <GiBookPile className="size-7" />
+			</h3>
 			<DragDropContext onDragEnd={onDragEnd}>
-				{books.filter((book) => book.status === "backlog").length > 0 && (
-					<>
-						<h3 className="my-2 flex items-end gap-2 text-xl font-semibold dark:text-white">
-							For Later <GiBookPile className="size-7" />
-						</h3>
-						{renderDraggableBookList("backlog")}
-					</>
-				)}
+				<div className="rounded-lg border bg-muted p-4">
+					{books.filter((book) => book.status === "backlog").length > 0 ? (
+						renderDraggableBookList("backlog")
+					) : (
+						<div className="p-4">
+							<p className="text-primary">
+								Look before, or you'll find yourself behind.
+							</p>
+						</div>
+					)}
+				</div>
 			</DragDropContext>
 
-			{books.filter((book) => book.status === "done").length > 0 && (
-				<>
-					<h3 className="my-2 flex items-end gap-2 text-xl font-semibold dark:text-white">
-						Done
-						<GiBookshelf className="size-7 pb-0.5" />
-					</h3>
-					<div>
+			<h3 className="my-2 flex items-end gap-2 text-xl font-semibold">
+				Done
+				<GiBookshelf className="size-7 pb-0.5" />
+			</h3>
+			<div className="rounded-lg border bg-muted p-4">
+				{books.filter((book) => book.status === "done").length > 0 ? (
+					<>
 						{books
 							.filter((book) => book.status === "done")
 							.map((book, index) => renderBookItem(book, index, "done"))}
+					</>
+				) : (
+					<div className="p-4">
+						<p className="text-primary">Well done is better than well said</p>
 					</div>
-				</>
-			)}
+				)}
+			</div>
 		</div>
 	)
 }

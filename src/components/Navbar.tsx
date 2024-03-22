@@ -1,19 +1,17 @@
 import { SiGithub, SiYoutube } from "react-icons/si"
 import { useTheme } from "@/hooks/useTheme"
 import { HiMiniMoon, HiMiniSun } from "react-icons/hi2"
+import { GiSpellBook } from "react-icons/gi"
 
 export const Navbar = () => {
 	return (
-		<header className="sticky top-0 z-50 w-full border-b bg-white dark:border-zinc-700 dark:bg-zinc-900">
+		<header className="sticky top-0 z-10 w-full border-b bg-background">
 			<div className="flex h-16 items-center px-10 sm:px-16 lg:px-44">
 				<div className="mx-auto w-full max-w-3xl space-y-20">
 					<div className="flex justify-between">
 						<div className="flex flex-1 items-center justify-start">
-							<a
-								href="/"
-								className="inline-flex h-10 items-center justify-center text-lg font-bold text-gray-800 dark:text-white"
-							>
-								Koreoxy
+							<a href="/" className="size-10 p-2 text-primary">
+								<GiSpellBook className="size-full" />
 							</a>
 						</div>
 

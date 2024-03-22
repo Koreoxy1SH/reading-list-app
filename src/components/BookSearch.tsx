@@ -69,7 +69,7 @@ export const BookSearch = () => {
 
 	return (
 		<div className="-m-1.5 overflow-x-auto">
-			<div className="sm:divide-y sm:divide-gray-200 sm:rounded-2xl sm:border sm:dark:divide-gray-700 sm:dark:border-gray-700">
+			<div className="sm:divide-y sm:divide-muted sm:rounded-2xl sm:border">
 				<div className="flex flex-col items-center gap-3 px-4 py-3 sm:flex-row">
 					<div className="relative w-full sm:max-w-xs">
 						<Input
@@ -153,7 +153,7 @@ export const BookSearch = () => {
 					)}
 				</div>
 
-				<div className="flex w-full flex-col items-center gap-3 border-t border-gray-200 px-6 py-4 dark:border-gray-700 sm:flex-row sm:justify-between">
+				<div className="flex w-full flex-col items-center gap-3 border-t px-6 py-4 sm:flex-row sm:justify-between">
 					<div>
 						<p className="text-sm text-gray-600 dark:text-gray-600">
 							{totalResults > 0 ? (
