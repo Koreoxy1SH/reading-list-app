@@ -59,7 +59,14 @@ export const useStore = create<BookStore>((set) => ({
 		set((state: BookState) => {
 			const updatedBooks: Book[] = [
 				...state.books,
-				{ ...newBook, status: "backlog" },
+				{
+					key: newBook.key,
+					title: newBook.title,
+					author_name: newBook.author_name,
+					first_publish_year: newBook.first_publish_year,
+					number_of_pages_median: newBook.number_of_pages_median || null,
+					status: newBook.status || "backlog",
+				},
 			]
 
 			localStorage.setItem("readingList", JSON.stringify(updatedBooks))
